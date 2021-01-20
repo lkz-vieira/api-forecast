@@ -1,57 +1,70 @@
-import { InternalError } from '@src/util/errors/internal-error';
-import { AxiosStatic } from 'axios';
+import { InternalError } from '@src/util/errors/internal-error'
+import config, { IConfig } from 'config'
+import * as HTTPUtil from '@src/util/request'
 
 export interface StormGlassPointSource {
-  [key: string]: number;
+  [key: string]: number
 }
 
 export interface StormGlassPoint {
-  readonly time: string;
-  readonly waveHeight: StormGlassPointSource;
-  readonly waveDirection: StormGlassPointSource;
-  readonly swellDirection: StormGlassPointSource;
-  readonly swellHeight: StormGlassPointSource;
-  readonly swellPeriod: StormGlassPointSource;
-  readonly windDirection: StormGlassPointSource;
-  readonly windSpeed: StormGlassPointSource;
+  readonly time: string
+  readonly waveHeight: StormGlassPointSource
+  readonly waveDirection: StormGlassPointSource
+  readonly swellDirection: StormGlassPointSource
+  readonly swellHeight: StormGlassPointSource
+  readonly swellPeriod: StormGlassPointSource
+  readonly windDirection: StormGlassPointSource
+  readonly windSpeed: StormGlassPointSource
 }
 
 export interface StormGlassResponse {
-  hours: Array<StormGlassPoint>;
+  hours: Array<StormGlassPoint>
 }
 
 export interface ForecastPoint {
-  time: string;
-  waveHeight: number;
-  waveDirection: number;
-  swellDirection: number;
-  swellHeight: number;
-  swellPeriod: number;
-  windDirection: number;
-  windSpeed: number;
+  time: string
+  waveHeight: number
+  waveDirection: number
+  swellDirection: number
+  swellHeight: number
+  swellPeriod: number
+  windDirection: number
+  windSpeed: number
 }
 
 export class ClienteRequestError extends InternalError {
   constructor(message: string) {
-    const InternalMessage = 'Unexpected error when trying to communicate to StormGlass';
-    super(`${InternalMessage} : ${message}`);
+    const InternalMessage = 'Unexpected error when trying to communicate to StormGlass'
+    super(`${InternalMessage} : ${message}`)
   }
 }
 
+const StormGlassConfig: IConfig = config.get('App.resources.StormGlass')
+
 export class StormGlass {
   readonly stormGlassAPIParams =
-    'swellDirection,swellHeight,swellPeriod,waveDirection,waveHeight,windDirection,windSpeed';
-  readonly stormGlassAPISouce = 'noaa';
-  constructor(readonly request: AxiosStatic) {}
+    'swellDirection,swellHeight,swellPeriod,waveDirection,waveHeight,windDirection,windSpeed'
+  readonly stormGlassAPISouce = 'noaa'
+  constructor(readonly request = new HTTPUtil.Request()) {}
 
   public async fetchPoints(lat: number, lng: number): Promise<Array<ForecastPoint>> {
     try {
       const response = await this.request.get<StormGlassResponse>(
-        `https://api.stormglass.io/v2/weather/point?lat=${lat}&lng=${lng}&params=${this.stormGlassAPIParams}&source=${this.stormGlassAPISouce}`
-      );
-      return this.normalizedResponse(response.data);
+        `${StormGlassConfig.get('apiUrl')}/weather/point?lat=${lat}&lng=${lng}&params=${
+          this.stormGlassAPIParams
+        }&source=${this.stormGlassAPISouce}`,
+        {
+          headers: {
+            Authorization: StormGlassConfig.get('apiToken')
+          }
+        }
+      )
+      return this.normalizedResponse(response.data)
     } catch (err) {
-      throw new ClienteRequestError(err.message);
+      if (HTTPUtil.Request.isRequestError(err)) {
+      }
+
+      throw new ClienteRequestError(err.message)
     }
   }
 
@@ -64,8 +77,8 @@ export class StormGlass {
       waveDirection: point.waveDirection[this.stormGlassAPISouce],
       waveHeight: point.waveHeight[this.stormGlassAPISouce],
       windDirection: point.windDirection[this.stormGlassAPISouce],
-      windSpeed: point.windSpeed[this.stormGlassAPISouce],
-    }));
+      windSpeed: point.windSpeed[this.stormGlassAPISouce]
+    }))
   }
 
   private isValidPoint(point: Partial<StormGlassPoint>): boolean {
@@ -78,6 +91,6 @@ export class StormGlass {
       point.waveHeight?.[this.stormGlassAPISouce] &&
       point.windDirection?.[this.stormGlassAPISouce] &&
       point.windSpeed?.[this.stormGlassAPISouce]
-    );
+    )
   }
 }

@@ -21,9 +21,9 @@ export class ForecastController {
             time: '2020-04-26T00:00:00+00:00',
             waveDirection: 231.38,
             waveHeight: 0.47,
-            windDirection: 299.45,
-          },
-        ],
+            windDirection: 299.45
+          }
+        ]
       },
       {
         time: '2020-04-26T01:00:00+00:00',
@@ -40,10 +40,10 @@ export class ForecastController {
             time: '2020-04-26T01:00:00+00:00',
             waveDirection: 232.12,
             waveHeight: 0.46,
-            windDirection: 310.48,
-          },
-        ],
-      },
+            windDirection: 310.48
+          }
+        ]
+      }
     ])
   }
 }
