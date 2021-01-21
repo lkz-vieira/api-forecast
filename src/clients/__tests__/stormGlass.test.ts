@@ -26,11 +26,11 @@ describe('StormGlass Client', () => {
       hours: [
         {
           windDirection: {
-            noaa: 300,
+            noaa: 300
           },
-          time: '2020-04-26T00:00:00+00:00',
-        },
-      ],
+          time: '2020-04-26T00:00:00+00:00'
+        }
+      ]
     }
 
     mockedRequest.get.mockResolvedValue({ data: incompleteResponse } as HTTPUtil.Response)
