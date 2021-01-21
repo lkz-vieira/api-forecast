@@ -55,8 +55,8 @@ export class StormGlass {
         }&source=${this.stormGlassAPISouce}`,
         {
           headers: {
-            Authorization: StormGlassConfig.get('apiToken')
-          }
+            Authorization: StormGlassConfig.get('apiToken'),
+          },
         }
       )
       return this.normalizedResponse(response.data)
@@ -77,7 +77,7 @@ export class StormGlass {
       waveDirection: point.waveDirection[this.stormGlassAPISouce],
       waveHeight: point.waveHeight[this.stormGlassAPISouce],
       windDirection: point.windDirection[this.stormGlassAPISouce],
-      windSpeed: point.windSpeed[this.stormGlassAPISouce]
+      windSpeed: point.windSpeed[this.stormGlassAPISouce],
     }))
   }
 

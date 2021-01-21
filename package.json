@@ -9,9 +9,7 @@
     "build": "tsc",
     "lint:fix": "eslint ./src ./test --ext '.ts,.tsx,.js,.json,.md,.snap' --fix",
     "test:functional": "jest --projects ./test --runInBand",
-    "test:unit": "jest",
-    "style:fix": "prettier --write 'src/**/*.ts' 'test/***/*.ts'",
-    "style:check": "prettier --check 'src/**/*.ts' 'test/***/*.ts'"
+    "test:unit": "jest"
   },
   "keywords": [],
   "author": "",
