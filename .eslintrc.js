@@ -20,7 +20,7 @@ module.exports = {
         semi: ['error', 'never'],
         'no-console': 2,
         'sort-imports': 'off',
-        'prettier/prettier': ['error', prettierConfig],
+        'prettier/prettier': ['error'],
         '@typescript-eslint/adjacent-overload-signatures': 'error',
         '@typescript-eslint/array-type': ['error', { default: 'generic', readonly: 'generic' }],
         '@typescript-eslint/ban-types': 'error',
