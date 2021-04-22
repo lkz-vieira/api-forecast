@@ -44,7 +44,7 @@
     "@types/express-pino-logger": "^4.0.2",
     "@types/express-rate-limit": "^5.0.0",
     "@types/http-status-codes": "^1.2.0",
-    "@types/jest": "^25.2.2",
+    "@types/jest": "^25.2.3",
     "@types/jsonwebtoken": "^8.5.0",
     "@types/lodash": "^4.14.168",
     "@types/module-alias": "^2.0.0",
